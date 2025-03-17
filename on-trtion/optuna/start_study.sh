@@ -1,5 +1,4 @@
 #!/bin/bash
-# Load database connection details
 
 module load mamba
 source activate myenv/

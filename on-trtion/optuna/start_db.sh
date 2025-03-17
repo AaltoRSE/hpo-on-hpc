@@ -2,14 +2,14 @@
 # Load Apptainer (Singularity)
 module load apptainer-postgres/16
 
-# Define configuration variables
-POSTGRES_PORT=5432  # Centralized port configuration
-HPC_SUBNET="10.30.0.0/16"
+# Configuration
+POSTGRES_PORT=5432  # Default PostgreSQL port
+HPC_SUBNET="10.30.0.0/16"  # HPC network range
 
 # Create required directories
 mkdir -p ~/postgres_data ~/postgres_run
 
-# Initialize database if it doesn't exist
+# Initialize database if not exists
 if [ ! -d ~/postgres_data/PG_16_202307181 ]; then
     echo "Initializing database..."
     if [ "$(ls -A ~/postgres_data)" ]; then
@@ -17,15 +17,15 @@ if [ ! -d ~/postgres_data/PG_16_202307181 ]; then
         rm -rf ~/postgres_data/*
     fi
     if ! apptainer exec ${IMAGE_PATH} initdb -D ~/postgres_data; then
-        echo "Failed to initialize database" >&2
+        echo "Database initialization failed" >&2
         exit 1
     fi
 fi
 
-# Get the node's IP address
+# Get node IP
 NODE_IP=$(hostname -I | awk '{print $1}')
 if [ -z "$NODE_IP" ]; then
-    echo "Failed to get node IP address" >&2
+    echo "Failed to get node IP" >&2
     exit 1
 fi
 echo "Node IP: $NODE_IP"
@@ -36,8 +36,8 @@ if netstat -tuln | grep -q "$POSTGRES_PORT"; then
     exit 1
 fi
 
-# Configure PostgreSQL before starting the server
-echo "Configuring PostgreSQL network settings..."
+# Configure PostgreSQL network settings
+echo "Configuring PostgreSQL..."
 mkdir -p ~/postgres_data
 cat <<EOF > ~/postgres_data/postgresql.conf
 listen_addresses = '*'
@@ -101,14 +101,14 @@ fi
 # Restart PostgreSQL inside the container
 apptainer exec instance://postgres_server pg_ctl -D /var/lib/postgresql/data restart
 
-# Create PostgreSQL user and database
+# Create and configure Optuna database
 apptainer exec instance://postgres_server psql -U postgres -c "CREATE USER optuna_user WITH PASSWORD 'optuna_password';"
 apptainer exec instance://postgres_server psql -U postgres -c "ALTER USER optuna_user WITH SUPERUSER;"
 apptainer exec instance://postgres_server psql -U postgres -c "CREATE DATABASE optuna_db OWNER optuna_user;"
 
-echo "PostgreSQL server started on $NODE_IP:$POSTGRES_PORT, accessible to all HPC nodes in $HPC_SUBNET"
+echo "PostgreSQL server ready at $NODE_IP:$POSTGRES_PORT"
 
-# Export connection details
+# Export connection details for Optuna
 export PGUSER=optuna_user
 export PGPASSWORD=optuna_password
 export PGHOST=${NODE_IP}
