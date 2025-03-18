@@ -4,8 +4,8 @@
 #SBATCH --mem=10GB
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
-#SBATCH --time=10:30:00
-#SBATCH --output=logs/pg_optuna_%j.out
+#SBATCH --time=00:03:00
+#SBATCH --output=logs/main_%j.out
 
 # 1. Start the PostgreSQL Database
 # This step initializes the PostgreSQL database that will store Optuna's study data
@@ -36,3 +36,10 @@ done
 # Final completion message
 echo "Job $job_id completed successfully"
 echo "Optimization process finished. Results stored in PostgreSQL database."
+
+# Load mamba and activate the environment
+module load mamba
+source activate myenv/
+
+# Run the final results script
+python -u final_results.py
