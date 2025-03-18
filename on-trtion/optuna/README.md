@@ -1,4 +1,4 @@
-# Optuna Optimization with SLURM
+# Optuna Optimization with PostgreSQL on Triton
 
 This directory contains scripts for running Optuna hyperparameter optimization with PostgreSQL on Triton using SLURM job scheduling.
 
