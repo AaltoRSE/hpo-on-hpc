@@ -1,7 +1,7 @@
 #!/bin/bash
 
 module load mamba
-source activate myenv/
+source activate optuna_parallel
 
 # Create study if it doesn't exist
 if ! optuna studies --storage "$OPTUNA_STORAGE" | grep -qw "my_study"; then
