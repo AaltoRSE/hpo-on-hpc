@@ -11,12 +11,17 @@ This directory contains scripts for running Optuna hyperparameter optimization w
 
 ## Usage
 
-1. Modify the SLURM parameters in `submit.slurm` as needed (e.g., time limit, memory)
-2. Submit the job to SLURM:
+1. Install the example environment:
+   ```bash
+   module load mamba
+   mamba env create -f env.yml
+   ```
+2. Modify the SLURM parameters in `submit.slurm` as needed (e.g., time limit, memory)
+3. Submit the job to SLURM:
    ```bash
    sbatch submit.slurm
    ```
-3. Monitor progress:
+4. Monitor progress:
    - Check job status: `squeue -j <job_id>`
    - View output logs: `logs/`
 

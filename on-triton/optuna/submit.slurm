@@ -39,7 +39,7 @@ echo "Optimization process finished. Results stored in PostgreSQL database."
 
 # Load mamba and activate the environment
 module load mamba
-source activate myenv/
+source activate optuna_parallel
 
 # Run the final results script
 python -u final_results.py

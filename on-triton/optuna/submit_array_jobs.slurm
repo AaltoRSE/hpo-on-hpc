@@ -7,7 +7,7 @@
 #SBATCH --output=logs/opt_job_%A_%a.out  # Separate log for each array job
 
 module load mamba
-source activate myenv/  # Load Python environment
+source activate optuna_parallel  # Load Python environment
 
 python -u optimization.py --study-name "my_study" --storage "$OPTUNA_STORAGE" \
     --n-trials 10 --n-jobs 1
