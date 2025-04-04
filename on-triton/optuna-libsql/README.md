@@ -6,7 +6,7 @@ optimization with libSQL on Triton using SLURM job scheduling.
 ## Files
 
 - `submit.slurm`: Main SLURM script that orchestrates the optimization process
-- `start_db.sh`: Script to initialize PostgreSQL database for Optuna
+- `start_db.sh`: Script to initialize libSQL database for Optuna
 - `start_study.sh`: Script to configure the Optuna study
 - `submit_array_jobs.slurm`: Script to submit parallel optimization trials
 
