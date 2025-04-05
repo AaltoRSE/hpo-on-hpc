@@ -1,0 +1,31 @@
+method: random
+program: train.py
+metric:
+  goal: minimize
+  name: loss
+parameters:
+  batch_size:
+    distribution: q_log_uniform_values
+    q: 8
+    min: 64
+    max: 256
+  dropout:
+    values:
+    - 0.3
+    - 0.4
+  epochs:
+    value: 3
+  fc_layer_size:
+    values:
+    - 64
+    - 128
+  learning_rate:
+    values:
+    - 0.01
+    - 0.001
+    - 0.0001
+  optimizer:
+    values:
+    - adam
+    - sgd
+max_runs: 20
