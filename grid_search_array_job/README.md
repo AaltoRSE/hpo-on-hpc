@@ -3,9 +3,9 @@
 This example contains a Python script for submitting multiple SLURM jobs to perform hyperparameter grid search for a machine learning model.
 
 ## Usage
-
-1. Prepare a `hyperparams.json` file with your desired hyperparameter ranges. Example:
-
+1. Prepare your script to accept parameters via command line arguments, checkout ```main.py```
+2. Prepare a `hyperparams.json` file with your desired hyperparameter ranges. Example:
+3. 
 ```json
 {
     "epoch": [10, 20, 30],
@@ -15,10 +15,11 @@ This example contains a Python script for submitting multiple SLURM jobs to perf
 }
 ```
 
-2. Run the submission script:
+3. Run the submission script:
 ```bash
 python submit_jobs.py
 ```
+4. Collect and analyze results
 
 ## Script Details
 
