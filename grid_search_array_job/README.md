@@ -1,6 +1,6 @@
 # Hyperparameter Grid Search via SLURM Array Jobs
 
-This example contains example scripts for submitting multiple SLURM jobs to perform hyperparameter grid search for a machine learning model.
+This folder contains example scripts for submitting multiple SLURM jobs to perform hyperparameter grid search for a machine learning model.
 
 ## Usage
 1. Prepare your script to accept parameters via command line arguments, checkout ```main.py```
