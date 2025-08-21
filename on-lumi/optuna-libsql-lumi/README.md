@@ -19,14 +19,25 @@ optimization with libSQL on a single LUMI node.
    wget https://github.com/tursodatabase/libsql/releases/download/libsql-server-v0.24.32/libsql-server-x86_64-unknown-linux-gnu.tar.xz
    tar xf libsql-server-x86_64-unknown-linux-gnu.tar.xz
    ```
-2. Install the PyTorch container
-3. Install extra packages alongside PyTorch container
+2. Install the PyTorch container:
+   ```bash
+   # Set his path to your actual project folder
+   export EBU_USER_PREFIX=/pfs/lustrep2/scratch/project_XXXXXXXXX/easybuild
+   module load LUMI partition/container EasyBuild-user
+   eb PyTorch-2.6.0-rocm-6.2.4-python-3.12-singularity-20250404.eb
+   ```
+
+3. Install extra packages alongside PyTorch container:
+   ```bash
+   module load LUMI  PyTorch/2.6.0-rocm-6.2.4-python-3.12-singularity-20250404
+   pip install -r requirements.txt
+   ```
+
 4. Submit the job to SLURM:
    ```bash
    sbatch submit.slurm
    ```
-5. Monitor progress:
-   - View output logs: `logs/`
+5. Monitor progress by viewing the logs in `logs/`
 
 ## Process Flow
 
