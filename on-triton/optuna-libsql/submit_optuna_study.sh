@@ -27,11 +27,14 @@ module load mamba
 source activate optuna_libsql
 
 # Create the study
-python create_study.py --study-name "$OPTUNA_STUDY" --storage "$OPTUNA_STORAGE"
+python create_study.py \
+    --study-name "$OPTUNA_STUDY" \
+    --storage "$OPTUNA_STORAGE" \
+    --auth-token "$LIBSQL_TOKEN"
 
 # 3. Submit the optimization job and get the job ID
 # This submits an array job that will run multiple optimization trials in parallel
-job_id=$(sbatch submit_array_jobs.slurm | awk '{print $4}')
+job_id=$(sbatch submit_optimization_array.sh | awk '{print $4}')
 
 # Wait for the array job to complete
 # Continuously check job status until it's no longer in the queue
@@ -43,7 +46,10 @@ echo "Job $job_id completed successfully"
 echo "Optimization process finished. Results stored in libSQL database."
 
 # Check the results and find the best parameters
-python -u check_results.py --study-name "$OPTUNA_STUDY" --storage "$OPTUNA_STORAGE"
+python -u check_results.py \
+    --study-name "$OPTUNA_STUDY" \
+    --storage "$OPTUNA_STORAGE" \
+    --auth-token "$LIBSQL_TOKEN"
 
 # Shut down the libSQL database
 source ./shutdown_db.sh

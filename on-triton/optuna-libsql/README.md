@@ -1,15 +1,20 @@
 # Optuna Optimization with libSQL on Triton
 
 This directory contains scripts for running Optuna hyperparameter
-optimization with libSQL on Triton using SLURM job scheduling.
+optimization with libSQL on Triton using Slurm job scheduling.
 
 ## Files
 
-- `submit.slurm`: Main SLURM script that orchestrates the optimization process
+- `submit_optuna_study.sh`: Main Slurm script that orchestrates
+  the optimization process. It starts the libSQL database, creates
+  the Optuna study and submits optimization jobs.
 - `start_db.sh`: Script to initialize libSQL database for Optuna
-- `start_study.sh`: Script to configure the Optuna study
-- `submit_array_jobs.slurm`: Script to submit parallel optimization trials.
-  Insert your code here.
+- `shutdown_db.sh`: Script to shutdown the libSQL database
+- `submit_optimization_array.sh`: Script to submit parallel optimization trials.
+- `create_study.py`: Python script that configures the Optuna study
+- `optimization.py`: Python script that contains the actual optimization code.
+  Modify this to match your task and your optimization goals.
+- `check_results.py`: Python script that checks what was the best trial.
 
 ## Usage
 
@@ -18,14 +23,14 @@ optimization with libSQL on Triton using SLURM job scheduling.
    module load mamba
    mamba env create -f env.yml
    ```
-2. Modify the SLURM parameters in `submit.slurm` and `submit_array_jobs.slurm`
-   as needed (e.g., time limit, memory, GPUs). Remember that `submit.slurm`
-   should have a time limit that is longer than `submit_array_jobs.slurm`
-   because the libsql server needs to be running for the trials to be
-   registered.
-3. Submit the job to SLURM:
+2. Modify the SLURM parameters in `submit_optuna_study.sh` and
+   `submit_optimization_array.sh` as needed (e.g., time limit, memory, GPUs).
+   Remember that `submit_optuna_study.sh` should have a time limit that is
+   longer than `submit_optimization_array.sh` because the libSQL server needs
+   to be running for the trials to be registered.
+3. Submit the job to Slurm:
    ```bash
-   sbatch submit.slurm
+   sbatch submit_optuna_study.sh
    ```
 4. Monitor progress:
    - Check job status: `squeue -j <job_id>`
@@ -36,12 +41,12 @@ optimization with libSQL on Triton using SLURM job scheduling.
 `submit.slurm` does the following:
 
 1. It starts a libSQL server
-2. It configures an  Optuna study (in `start_study.sh`)
+2. It configures an  Optuna study (in `create_study.py`)
 3. It submits parallel optimization trials as an array job
 4. It waits for completion and outputs results
 
-Each job submitted by `submit_array_jobs.slurm` will run their
-study and report back to the libsql server.
+Each job submitted by `submit_optimization_array.sh` will run their
+study and report back to the libSQL server.
 
 ## Requirements
 
